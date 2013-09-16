@@ -1,14 +1,14 @@
 package nicky.dao.entity;
 
 public class TestEntity {
-    private String CLT;
+    private String pic_url;
 
-    public String getCLT() {
-        return CLT;
+    public String getPic_url() {
+        return pic_url;
     }
 
-    public void setCLT(String cLT) {
-        CLT = cLT;
+    public void setPic_url(String pic_url) {
+        this.pic_url = pic_url;
     }
-    
+
 }
