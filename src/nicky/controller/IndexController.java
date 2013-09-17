@@ -19,7 +19,7 @@ public class IndexController extends MultiActionController{
     }
     @RequestMapping(value = "/index")
     public ModelAndView indexView() {
-        ModelAndView mav = new ModelAndView("index");
+        ModelAndView mav = new ModelAndView("photo/photo_list");
 //        mav.addObject("name", "Nicky!  " +  testServiceImpl.find());
         mav.addObject("name", "Nicky!  " +  testServiceImpl.find());
         return mav;
