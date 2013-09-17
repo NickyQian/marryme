@@ -41,7 +41,7 @@
         <property name="username" value="${datasource.username}" />
         <property name="password" value="${datasource.password}" />
         <!--检查数据库连接池中空闲连接的间隔时间，单位是分，默认值：240，如果要取消则设置为0-->
-        <property name="idleConnectionTestPeriodInMinutes" value="5" />
+        <property name="idleConnectionTestPeriodInMinutes" value="10" />
         <!--连接池中未使用的链接最大存活时间，单位是分，默认值：60，如果要永远存活设置为0-->
         <property name="idleMaxAgeInMinutes" value="20" />
         <!--每个分区最大的连接数 -->
@@ -49,13 +49,13 @@
         <!--每个分区最小的连接数 -->
         <property name="minConnectionsPerPartition" value="1" />
         <!--分区数，默认值2，最小1，推荐3-4，视应用而定  -->
-        <property name="partitionCount" value="1" />
+        <property name="partitionCount" value="2" />
         <!-- 当连接池中的连接耗尽的时候一次同时获取的连接数。Default: 1 -->
-        <property name="acquireIncrement" value="1" />
+        <property name="acquireIncrement" value="5" />
         <!--缓存prepared statements的大小，默认值：0 -->
         <property name="statementsCacheSize" value="50" />
         <!--每个分区释放链接助理进程的数量，默认值：3 -->
-        <property name="releaseHelperThreads" value="1" />
+        <property name="releaseHelperThreads" value="3" />
     </bean>
     
     <!-- define the SqlSessionFactory -->
