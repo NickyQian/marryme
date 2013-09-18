@@ -1,6 +1,6 @@
 <#import "/layout/layout.ftl" as layout>
 <#escape x as x?html>
-<@layout.page title="图片显示" 
+<@layout.page title="欢迎来到小屋" 
                 csses=['/photo/photo_list.css']
                 scripts=[]>
 

@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="${basePath}/css/bootstrap.min.css" rel="stylesheet">
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9] -->
       <script src="//cdnjs.bootcss.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
@@ -25,11 +25,11 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
-    <link rel="shortcut icon" href="./img/ico/favicon.png">
+    <link rel="shortcut icon" href="${basePath}/img/ico/favicon.png">
     <link href="//cdnjs.bootcss.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="./css/layout/layout.css" rel="stylesheet">
+    <link href="${basePath}/css/layout/layout.css" rel="stylesheet">
     <#list csses as css>
-        <link href="./css/${css}" type="text/css" rel="stylesheet" />
+        <link href="${basePath}/css/${css}" type="text/css" rel="stylesheet" />
     </#list>
     <style type="text/css">
       
@@ -56,16 +56,18 @@
         </div><!-- /.navbar -->
       </div>
      <#nested>
-     <div class="footer">
-         <p>&copy; Company 2013</p>
+     <div class="footer" style = "text-align: center;">
+         <p><a href="${basePath}/maintain/index">&copy; Nicky 2013</a></p>
      </div>
 </div><!-- /.container -->
 
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="//cdnjs.bootcss.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="${basePath}/jquery/jquery-1.9.1.min.js"></script>
+    <script src="${basePath}/jquery/jquery-ui-1.8.14.custom.min.js"></script>
+    <script src="${basePath}/jquery/jquery.ui.widget.js"></script>
     <script src="//cdnjs.bootcss.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
     <#list scripts as scr>
-        <script src="./${scr}" type="text/javascript"></script>
+        <script src="${basePath}/${scr}" type="text/javascript"></script>
     </#list>
 </body>
 </html>

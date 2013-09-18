@@ -78,4 +78,6 @@
     </bean>
     <!-- enable transaction demarcation with annotations -->
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+    <!-- multipart resolver -->
+    <bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 </beans>
