@@ -1,18 +1,14 @@
 <#import "/layout/layout.ftl" as layout>
 <#escape x as x?html>
 <@layout.page title="上传照片" 
-                csses=['photo/photo_list.css',
-                'upload/dropzone.css']
-                scripts=['jquery/jquery.iframe-transport.js',
-                'jquery/jquery.fileupload.js',
-                'js/upload/myuploadfunction.js']>
+                csses=['photo/photo_list.css','upload/uploadify.css']
+                scripts=['js/upload/myuploadfunction.js',
+                         'jquery/uploadify/jquery.uploadify.min.js']>
 <h1>Spring MVC - jQuery File Upload</h1>
-    <div style="width:500px;padding:20px">
-        <input id="fileupload" type="file" name="files[]" data-url="${basePath}/maintain/upload" multiple>
-        <div id="dropzone">Drop files here</div>
-        <div id="progress">
-        <div style="width: 0%;"></div>
-    </div>
+    <form>
+        <div id="queue"></div>
+        <input id="file_upload" name="file_upload" type="file" multiple="true">
+    </form>
  
     <table id="uploaded-files">
         <tr>

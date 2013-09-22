@@ -1,28 +1,11 @@
-$(function () {
-    $('#fileupload').fileupload({
-        dataType: 'json',
- 
-        done: function (e, data) {
-            $("tr:has(td)").remove();
-            $.each(data.result, function (index, file) {
- 
-                $("#uploaded-files").append(
-                        $('<tr/>')
-                        .append($('<td/>').text(file.fileName))
-                        .append($('<td/>').text(file.fileSize))
-                        .append($('<td/>').text(file.fileType))
-                        .append($('<td/>').html("<a href='/maintain/get/"+index+"'>Click</a>"))
-                        )//end $("#uploaded-files").append()
-            });
-        },
- 
-        progressall: function (e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            $('#progress .bar').css(
-                'width',
-                progress + '%'
-            );
-        },
-        dropZone: $('#dropzone')
-    });
-});
+$(function() {
+			$('#file_upload').uploadify({
+				'buttonImage' : basePath + 'img/photo/test.jpg',
+//				'formData' : {
+//					'timestamp' : '<?php echo $timestamp;?>',
+//					'token'     : '<?php echo md5('unique_salt' . $timestamp);?>'
+//				},
+				'swf'      : basePath + 'jquery/uploadify/uploadify.swf',
+				'uploader' : basePath + 'maintain/upload'
+			});
+		});

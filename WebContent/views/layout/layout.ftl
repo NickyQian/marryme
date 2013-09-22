@@ -34,6 +34,19 @@
     <style type="text/css">
       
     </style>
+    <script type="text/javascript">
+        var basePath="${basePath}/";
+    </script>
+    <style type="text/css">
+        .uploadify-button {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+        }
+        .uploadify:hover .uploadify-button {
+            background-color: transparent;
+        }
+    </style>
 </head>
 <body>
 
@@ -64,7 +77,6 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="${basePath}/jquery/jquery-1.9.1.min.js"></script>
     <script src="${basePath}/jquery/jquery-ui-1.8.14.custom.min.js"></script>
-    <script src="${basePath}/jquery/jquery.ui.widget.js"></script>
     <script src="//cdnjs.bootcss.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
     <#list scripts as scr>
         <script src="${basePath}/${scr}" type="text/javascript"></script>
