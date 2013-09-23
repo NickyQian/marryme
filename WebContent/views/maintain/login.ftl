@@ -8,19 +8,19 @@
           <div class="control-group">
             <label class="control-label">user name</label>
             <div class="controls">
-              <input type="text" id="inputEmail" name ="userName" placeholder="user name">
+              <input type="text" id="inputEmail" name ="userName" placeholder="user name" value = "Nicky">
             </div>
           </div>
           <div class="control-group">
             <label class="control-label">Password</label>
             <div class="controls">
-              <input type="password" id="inputPassword" name = "password" placeholder="Password">
+              <input type="password" id="inputPassword" name = "password" placeholder="Password" value = "NIcky">
             </div>
           </div>
           <div class="control-group">
             <div class="controls">
               <label class="checkbox">
-                <input type="checkbox"> Remember me
+                <input name = "isRemember" type="checkbox" checked> Remember me
               </label>
               <button type="submit" class="btn">Sign in</button>
             </div>

@@ -1,19 +1,25 @@
 package nicky.controller;
 
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import nicky.bean.FileMeta;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,74 +31,122 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 @Controller
 @RequestMapping("/maintain")
 public class MaintainController extends MultiActionController {
-    @RequestMapping("/index")
-    public ModelAndView indexView() {
-        ModelAndView mav = new ModelAndView("maintain/login");
-        return mav;
+    @RequestMapping(value = "/index")
+    public ModelAndView loginView(HttpServletRequest request) {
+        // check if cookie or session exists.
+        Cookie[] cookies = request.getCookies();// get cookies
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("loginuser")) {
+                request.getSession().setAttribute("loginuser",
+                        cookie.getValue());
+                return new ModelAndView("maintain/index");
+            }
+        }
+        String loginUserName = (String) request.getSession().getAttribute(
+                "loginuser");
+        if (loginUserName != null) {
+            return new ModelAndView("maintain/index");
+        } else {
+            return new ModelAndView("maintain/login");
+        }
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView login(String userName, String password) {
-        if (userName.equals("Nicky") && password.equals("NIcky"))
+    public ModelAndView login(HttpServletRequest request,
+            HttpServletResponse response, String userName, String password,
+            boolean isRemember) {
+        if (userName.equals("Nicky") && password.equals("NIcky")) {
+            request.getSession().setAttribute("loginuser", userName);
+            if (isRemember) {
+                // set cookie
+                Cookie cookie = new Cookie("loginuser", userName);
+                cookie.setMaxAge(3600);
+                response.addCookie(cookie);
+            }
             return new ModelAndView("maintain/index");
+        }
         return new ModelAndView("common/error");
+    }
+    
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
+        request.getSession().invalidate();
+        Cookie[] cookies = request.getCookies();// get cookies
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("loginuser")) {
+                // 0 ：delete immediately; 
+                //-1 : delete after close the browser
+                cookie.setMaxAge(0); 
+                response.addCookie(cookie); 
+            }
+        }
+        return new ModelAndView("photo/photo_list");
     }
 
     LinkedList<FileMeta> files = new LinkedList<FileMeta>();
     FileMeta fileMeta = null;
 
     /***************************************************
-     * URL: /rest/controller/upload upload(): receives files
+     * URL: /maintain/upload upload(): receives files
      * 
      * @param request
      *            : MultipartHttpServletRequest auto passed
      * @param response
      *            : HttpServletResponse auto passed
      * @return LinkedList<FileMeta> as json format
-     * @throws UnsupportedEncodingException 
+     * @throws UnsupportedEncodingException
      ****************************************************/
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public @ResponseBody
-    LinkedList<FileMeta> upload(MultipartHttpServletRequest request,
+    List<FileMeta> upload(MultipartHttpServletRequest request,
             HttpServletResponse response) throws UnsupportedEncodingException {
-        request.setCharacterEncoding("utf-8");
         // 1. build an iterator
         Iterator<String> itr = request.getFileNames();
         MultipartFile mpf = null;
 
+        /* 上传原图的路径 */
+        String uploadPath = request.getSession().getServletContext()
+                .getRealPath("/photos")
+                + File.separator;
+        /* 缩略图存放的路径 */
+        String thumbnailPath = request.getSession().getServletContext()
+                .getRealPath("/photos/tumbPhotos")
+                + File.separator;
+
         // 2. get each file
         while (itr.hasNext()) {
-
             // 2.1 get next MultipartFile
-            String s2 = itr.next();
-            mpf = request.getFile(s2);
-            System.out.println(new String(mpf.getOriginalFilename().getBytes("ISO8859-1"), "utf-8") + " uploaded! "
-                    + files.size());
+            mpf = request.getFile(itr.next());
+            /* 用当前时间重命名文件 */
+            String fileName = generateFileName();
+            /* 照片的title */
+            String fileTitle = new String(mpf.getOriginalFilename().getBytes(
+                    "ISO8859-1"), "utf-8");
+            // /* 照片的描述 */
+            // String fileDescript;
 
-            // 2.2 if files > 10 remove the first from the list
-            if (files.size() >= 10)
-                files.pop();
+            // // 2.2 if files > 10 remove the first from the list
+            // if (files.size() >= 10)
+            // files.pop();
 
             // 2.3 create new fileMeta
             fileMeta = new FileMeta();
-            fileMeta.setFileName(new String(mpf.getOriginalFilename().getBytes(), "utf-8"));
+            fileMeta.setFileName(fileName);
+            fileMeta.setFileTitle(fileTitle);
             fileMeta.setFileSize(mpf.getSize() / 1024 + " Kb");
             fileMeta.setFileType(mpf.getContentType());
 
             try {
                 fileMeta.setBytes(mpf.getBytes());
 
-                // copy file to local disk (make sure the path
-                // "e.g. D:/temp/files" exists)
-                String s = request.getSession()
-                        .getServletContext()
-                        .getRealPath("/photos/");
-                FileCopyUtils.copy(
-                        mpf.getBytes(),
-                        new FileOutputStream(request.getSession()
-                                .getServletContext()
-                                .getRealPath("/photos")
-                                + File.separator + mpf.getOriginalFilename()));
+                // copy file to local disk (make sure the path exists)
+                FileCopyUtils.copy(mpf.getBytes(), new FileOutputStream(
+                        uploadPath + fileName));
+                System.out.println(fileTitle + " uploaded! ");
+                createPreviewImage(uploadPath + fileName, thumbnailPath
+                        + fileName);
+
+                // 相关数据存入数据库
 
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -102,8 +156,61 @@ public class MaintainController extends MultiActionController {
             files.add(fileMeta);
         }
         // result will be like this
-        // [{"fileName":"app_engine-85x77.png","fileSize":"8 Kb","fileType":"image/png"},...]
+        // [{"fileName":"app_engine-85x77.png", "fileTitle": "图片",
+        // "fileSize":"8 Kb","fileType":"image/jpg"},...]
         return files;
+    }
+
+    /**
+     * 创建缩略图
+     */
+    private final int IMAGE_SIZE = 120;
+
+    public File createPreviewImage(String srcFile, String destFile) {
+        try {
+            File fi = new File(srcFile); // src
+            File fo = new File(destFile); // dest
+            /* 如果不存在就新建 */
+            if (!fo.exists()) {
+                fo.mkdirs();
+            }
+            BufferedImage bis = ImageIO.read(fi);
+
+            int w = bis.getWidth();
+            int h = bis.getHeight();
+            int nw = IMAGE_SIZE;
+            int nh = (nw * h) / w;
+            if (nh > IMAGE_SIZE) {
+                nh = IMAGE_SIZE;
+                nw = (nh * w) / h;
+            }
+            double sx = (double) nw / w;
+            double sy = (double) nh / h;
+
+            AffineTransform transform = new AffineTransform();
+            transform.setToScale(sx, sy);
+            AffineTransformOp ato = new AffineTransformOp(transform, null);
+            BufferedImage bid = new BufferedImage(nw, nh,
+                    BufferedImage.TYPE_3BYTE_BGR);
+            ato.filter(bis, bid);
+            ImageIO.write(bid, "jpg", fo);
+            return fo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(
+                    " Failed in create preview image. Error:  "
+                            + e.getMessage());
+        }
+    }
+
+    /**
+     * 获得以当前时间戳的照片名
+     * 
+     * @return
+     */
+    public String generateFileName() {
+        Long fileName = System.currentTimeMillis();
+        return fileName.toString() + ".jpg";
     }
 
 }

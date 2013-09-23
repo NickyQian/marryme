@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class FileMeta {
 
     private String fileName;
+    private String fileTitle;
+    private String fileDescription;
     private String fileSize;
     private String fileType;
 
@@ -42,5 +44,21 @@ public class FileMeta {
 
     public void setBytes(byte[] bytes) {
         this.bytes = bytes;
+    }
+
+    public String getFileTitle() {
+        return fileTitle;
+    }
+
+    public void setFileTitle(String fileTitle) {
+        this.fileTitle = fileTitle;
+    }
+
+    public String getFileDescription() {
+        return fileDescription;
+    }
+
+    public void setFileDescription(String fileDescription) {
+        this.fileDescription = fileDescription;
     }
 }

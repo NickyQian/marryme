@@ -24,6 +24,7 @@
     <mvc:resources mapping="/js/**" location="/js/" />
     <mvc:resources mapping="/img/**" location="/img/" />
     <mvc:resources mapping="/jquery/**" location="/jquery/" />
+    <mvc:resources mapping="/photos/**" location="/photos/" />
     
     <!-- annotation默认的方法映射适配器 -->
      <bean id="handlerMapping"
