@@ -9,8 +9,12 @@ public class FileMeta {
     private String fileName;
     private String fileTitle;
     private String fileDescription;
-    private String fileSize;
-    private String fileType;
+    /* file size unit: kb */
+    private Long fileSize;
+    /* created time*/
+    private String createTime;
+    /* update time */
+    private String updateTime;
 
     private byte[] bytes;
 
@@ -22,20 +26,12 @@ public class FileMeta {
         this.fileName = fileName;
     }
 
-    public String getFileSize() {
+    public Long getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize(String fileSize) {
+    public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
-    }
-
-    public String getFileType() {
-        return fileType;
-    }
-
-    public void setFileType(String fileType) {
-        this.fileType = fileType;
     }
 
     public byte[] getBytes() {
@@ -60,5 +56,21 @@ public class FileMeta {
 
     public void setFileDescription(String fileDescription) {
         this.fileDescription = fileDescription;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
     }
 }

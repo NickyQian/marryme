@@ -17,7 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import nicky.bean.FileMeta;
+import nicky.common.Constants;
+import nicky.service.interfaces.IFileService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,17 +34,22 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 @Controller
 @RequestMapping("/maintain")
 public class MaintainController extends MultiActionController {
+    @Autowired
+    private IFileService fileServiceImpl;
+    
     @RequestMapping(value = "/index")
     public ModelAndView loginView(HttpServletRequest request) {
         // check if cookie or session exists.
         Cookie[] cookies = request.getCookies();// get cookies
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("loginuser")) {
-                request.getSession().setAttribute("loginuser",
-                        cookie.getValue());
-                return new ModelAndView("maintain/index");
+        if(cookies != null){
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("loginuser")) {
+                    request.getSession().setAttribute("loginuser",
+                            cookie.getValue());
+                    return new ModelAndView("maintain/index");
+                }
             }
-        }
+        } 
         String loginUserName = (String) request.getSession().getAttribute(
                 "loginuser");
         if (loginUserName != null) {
@@ -99,18 +107,18 @@ public class MaintainController extends MultiActionController {
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public @ResponseBody
     List<FileMeta> upload(MultipartHttpServletRequest request,
-            HttpServletResponse response) throws UnsupportedEncodingException {
+            HttpServletResponse response) throws UnsupportedEncodingException, Exception {
         // 1. build an iterator
         Iterator<String> itr = request.getFileNames();
         MultipartFile mpf = null;
 
         /* 上传原图的路径 */
         String uploadPath = request.getSession().getServletContext()
-                .getRealPath("/photos")
+                .getRealPath(Constants.PIC_FILE_PATH)
                 + File.separator;
         /* 缩略图存放的路径 */
         String thumbnailPath = request.getSession().getServletContext()
-                .getRealPath("/photos/tumbPhotos")
+                .getRealPath(Constants.PIC_TUMBNIAL_PATH)
                 + File.separator;
 
         // 2. get each file
@@ -133,8 +141,7 @@ public class MaintainController extends MultiActionController {
             fileMeta = new FileMeta();
             fileMeta.setFileName(fileName);
             fileMeta.setFileTitle(fileTitle);
-            fileMeta.setFileSize(mpf.getSize() / 1024 + " Kb");
-            fileMeta.setFileType(mpf.getContentType());
+            fileMeta.setFileSize(mpf.getSize() / 1024);
 
             try {
                 fileMeta.setBytes(mpf.getBytes());
@@ -147,6 +154,7 @@ public class MaintainController extends MultiActionController {
                         + fileName);
 
                 // 相关数据存入数据库
+                fileServiceImpl.saveFileInfo(fileMeta);
 
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -165,7 +173,6 @@ public class MaintainController extends MultiActionController {
      * 创建缩略图
      */
     private final int IMAGE_SIZE = 120;
-
     public File createPreviewImage(String srcFile, String destFile) {
         try {
             File fi = new File(srcFile); // src

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 上传照片的dao -->
+<mapper namespace="nicky.dao.mapper.file.FileMapper">
+    <insert id = "saveFile" parameterType = "FileMeta">
+        <![CDATA[
+        insert into picture(pic_name,pic_title,pic_size, pic_create_time, pic_update_time)
+            values(#{fileName},#{fileTitle},#{fileSize},sysdate(),sysdate())
+        ]]>
+    </insert>
+</mapper>

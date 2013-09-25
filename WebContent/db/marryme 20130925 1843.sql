@@ -1,7 +1,7 @@
 -- MySQL Administrator dump 1.4
 --
 -- ------------------------------------------------------
--- Server version	5.5.29
+-- Server version	5.1.51-community
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -28,18 +28,24 @@ USE marryme;
 DROP TABLE IF EXISTS `picture`;
 CREATE TABLE `picture` (
   `pic_id` int(11) NOT NULL AUTO_INCREMENT,
-  `pic_url` varchar(45) DEFAULT NULL,
   `pic_name` varchar(45) DEFAULT NULL,
+  `favour_count` int(20) DEFAULT '0',
+  `pic_title` varchar(45) NOT NULL DEFAULT '空',
+  `pic_descript` varchar(200) DEFAULT NULL,
+  `pic_size` int(11) DEFAULT NULL,
+  `pic_create_time` datetime DEFAULT NULL,
+  `pic_update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`pic_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `picture`
 --
 
 /*!40000 ALTER TABLE `picture` DISABLE KEYS */;
-INSERT INTO `picture` (`pic_id`,`pic_url`,`pic_name`) VALUES 
- (1,'picurl_test','picname');
+INSERT INTO `picture` (`pic_id`,`pic_name`,`favour_count`,`pic_title`,`pic_descript`,`pic_size`,`pic_create_time`,`pic_update_time`) VALUES 
+ (1,'picname',0,'空',NULL,NULL,NULL,NULL),
+ (3,'1380105543156.jpg',0,'我可要开始装逼了.jpg',NULL,6,'2013-09-25 18:39:03','2013-09-25 18:39:03');
 /*!40000 ALTER TABLE `picture` ENABLE KEYS */;
 
 
