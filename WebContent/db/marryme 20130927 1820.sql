@@ -31,21 +31,18 @@ CREATE TABLE `picture` (
   `pic_name` varchar(45) DEFAULT NULL,
   `favour_count` int(20) DEFAULT '0',
   `pic_title` varchar(45) NOT NULL DEFAULT '空',
-  `pic_descript` varchar(200) DEFAULT NULL,
+  `pic_description` varchar(200) DEFAULT NULL,
   `pic_size` int(11) DEFAULT NULL,
   `pic_create_time` datetime DEFAULT NULL,
   `pic_update_time` datetime DEFAULT NULL,
   PRIMARY KEY (`pic_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=212 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `picture`
 --
 
 /*!40000 ALTER TABLE `picture` DISABLE KEYS */;
-INSERT INTO `picture` (`pic_id`,`pic_name`,`favour_count`,`pic_title`,`pic_descript`,`pic_size`,`pic_create_time`,`pic_update_time`) VALUES 
- (1,'picname',0,'空',NULL,NULL,NULL,NULL),
- (3,'1380105543156.jpg',0,'我可要开始装逼了.jpg',NULL,6,'2013-09-25 18:39:03','2013-09-25 18:39:03');
 /*!40000 ALTER TABLE `picture` ENABLE KEYS */;
 
 
