@@ -70,7 +70,7 @@
       </div>
      <#nested>
      <div class="footer" style = "text-align: center;">
-         <p><a href="${basePath}/maintain/index">&copy; Nicky 2013</a></p>
+         <p><a href="${basePath}/maintain/index" style = " position:fixed; bottom:20px">&copy; Nicky 2013</a></p>
      </div>
 </div><!-- /.container -->
 

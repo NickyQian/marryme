@@ -1,27 +1,31 @@
 $(function() {
 			$('#file_upload').uploadify({
+//				'buttonClass' : 'some-class',
+				'removeTimeout' : 0,
 				'buttonImage' : basePath + 'img/photo/test.jpg',
-//				'formData' : {
-//					'timestamp' : '<?php echo $timestamp;?>',
-//					'token'     : '<?php echo md5('unique_salt' . $timestamp);?>'
-//				},
+				'fileTypeExts' : '*.jpg',
+				'progressData' : 'speed',
 				'swf'      : basePath + 'jquery/uploadify/uploadify.swf',
 				'uploader' : basePath + 'maintain/upload',
 				'method'   : 'post', 
 				'auto' : false,		// 是否自动上传 
 				'multi' : true,     // 是否允许传多个文件
 				'onUploadSuccess' : function(file, data, response) {
-					alert(data);
-					alert(file);
-					s = eval("("+ data +")");
-					 var path=basePath+"photos/"+s[0].fileName;
-		                $('#result>img').attr("src",path);
-		                $('#photoname_hidden').val(data);
-				},
-				'onComplete' : function(event,ID,fileObj,response,data){
-					alert("ok2");
+					dataArr = eval("("+ data +")");
+					$.each(dataArr, function(i,file){
+					      var path = basePath+"photos/tumbnailphotos/"+file.fileName;
+					      var $editInput = $("#editInput").clone();
+					      $editInput.attr("id", "file" + file.fileId);
+					      var $img = $("<img class = 'img-polaroid'/>");
+					      $editInput.show();
+					      $img.attr("src",path);
+					      $editInput.find("#result").append($img);
+					      $editInput.find("#file_title").val(file.fileTitle);
+					      $editInput.find("#file_id").val(file.fileId);
+					      $('#holder').append($editInput);
+					      $("#submit_all_btn").show();
+					  });
 				}
-				
 			});
 		});
 function startUpload() {

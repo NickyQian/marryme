@@ -19,15 +19,31 @@
           </ol>
           <!-- Carousel items -->
           <div class="carousel-inner">
-            <div class="active item">
-                <img src = "./img/photo/1.jpg"/>
-                <div class="carousel-caption">
-                  <h4>Third Thumbnail label</h4>
-                  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                </div>
-            </div>
-            <div class="item"><img src = "./img/photo/2.jpg"/></div>
-            <div class="item"><img src = "./img/photo/3.jpg"/></div>
+              <#if pictures??> 
+                    
+                        <#list pictures as pic>
+                            <#if pic_index == 0>
+                                <div class="active item">
+                                    <img src = "./photos/${pic.fileName}"/>
+                                    <div class="carousel-caption">
+                                      <h4>${pic.fileTitle!""}</h4>
+                                      <p>${pic.fileDescription!""}</p>
+                                    </div>
+                                </div>
+                            <#else>
+                                <div class="item">
+                                    <img src = "./photos/${pic.fileName}"/>
+                                    <div class="carousel-caption">
+                                      <h4>${pic.fileTitle!""}</h4>
+                                      <p>${pic.fileDescription!""}</p>
+                                    </div>
+                                </div>
+                            </#if>
+                        </#list>
+                    
+              <#else>
+                    <div>暂时没有照片！~。~</div>
+              </#if>
           </div>
           <!-- Carousel nav -->
           <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>

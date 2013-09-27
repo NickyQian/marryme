@@ -1,5 +1,7 @@
 package nicky.service.impls;
 
+import java.util.List;
+
 import nicky.bean.FileMeta;
 import nicky.dao.mapper.file.FileMapper;
 import nicky.service.interfaces.IFileService;
@@ -15,5 +17,24 @@ public class FileServiceImpl implements IFileService {
         // TODO Auto-generated method stub
         fileMapper.saveFile(file);
     }
+
+    @Override
+    public void batchSaveFile(Long[] fileIds, String[] fileTitles, String[] fileDescs) {
+        if(fileIds != null && fileIds.length != 0) {
+            List<FileMeta> files = FileMeta.formFileList(fileIds, fileTitles, fileDescs);
+            for (FileMeta file : files) {
+                fileMapper.updateFile(file);
+                }
+        }
+    }
+    /**
+     * find all files
+     */
+    @Override
+    public List<FileMeta> findAllFiles() {
+        // TODO Auto-generated method stub
+        return fileMapper.findAllFiles();
+    }
+    
 
 }

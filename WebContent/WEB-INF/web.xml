@@ -28,6 +28,10 @@
             <param-value>true</param-value>
         </init-param>
     </filter>
+    <filter-mapping>
+        <filter-name>characterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <!-- 添加spring3控制器及映射规则 -->
     <display-name>Spring3mvc</display-name>

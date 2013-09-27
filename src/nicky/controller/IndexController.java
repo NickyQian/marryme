@@ -1,5 +1,9 @@
 package nicky.controller;
 
+import java.util.List;
+
+import nicky.bean.FileMeta;
+import nicky.service.interfaces.IFileService;
 import nicky.service.interfaces.ITestService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,8 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 public class IndexController extends MultiActionController{
     @Autowired
     private ITestService testServiceImpl;
+    @Autowired
+    private IFileService fileServiceImpl;
 
     @RequestMapping("/")
     public ModelAndView index() {
@@ -22,6 +28,8 @@ public class IndexController extends MultiActionController{
         ModelAndView mav = new ModelAndView("photo/photo_list");
 //        mav.addObject("name", "Nicky!  " +  testServiceImpl.find());
         mav.addObject("name", "Nicky!  " +  testServiceImpl.find());
+        List<FileMeta> pictures = fileServiceImpl.findAllFiles();
+        mav.addObject("pictures", pictures);
         return mav;
     }
 }

@@ -91,9 +91,6 @@ public class MaintainController extends MultiActionController {
         return new ModelAndView("photo/photo_list");
     }
 
-    LinkedList<FileMeta> files = new LinkedList<FileMeta>();
-    FileMeta fileMeta = null;
-
     /***************************************************
      * URL: /maintain/upload upload(): receives files
      * 
@@ -108,6 +105,8 @@ public class MaintainController extends MultiActionController {
     public @ResponseBody
     List<FileMeta> upload(MultipartHttpServletRequest request,
             HttpServletResponse response) throws UnsupportedEncodingException, Exception {
+        LinkedList<FileMeta> files = new LinkedList<FileMeta>();
+        FileMeta fileMeta = null;
         // 1. build an iterator
         Iterator<String> itr = request.getFileNames();
         MultipartFile mpf = null;
@@ -128,8 +127,7 @@ public class MaintainController extends MultiActionController {
             /* 用当前时间重命名文件 */
             String fileName = generateFileName();
             /* 照片的title */
-            String fileTitle = new String(mpf.getOriginalFilename().getBytes(
-                    "ISO8859-1"), "utf-8");
+            String fileTitle = mpf.getOriginalFilename().replace(".jpg", "");
             // /* 照片的描述 */
             // String fileDescript;
 
@@ -155,7 +153,6 @@ public class MaintainController extends MultiActionController {
 
                 // 相关数据存入数据库
                 fileServiceImpl.saveFileInfo(fileMeta);
-
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -164,15 +161,21 @@ public class MaintainController extends MultiActionController {
             files.add(fileMeta);
         }
         // result will be like this
-        // [{"fileName":"app_engine-85x77.png", "fileTitle": "图片",
+        // [{"fileId": "121", "fileName":"app_engine-85x77.png", "fileTitle": "图片",
         // "fileSize":"8 Kb","fileType":"image/jpg"},...]
         return files;
+    }
+
+    @RequestMapping(value = "/batch_save", method = RequestMethod.POST)
+    public String batchSaveFile(Long[] fileId, String[] fileTitle, String[] fileDesc) {
+        fileServiceImpl.batchSaveFile(fileId, fileTitle, fileDesc);
+        return "redirect:/maintain/index";
     }
 
     /**
      * 创建缩略图
      */
-    private final int IMAGE_SIZE = 120;
+    private final int IMAGE_WIDTH = 300;
     public File createPreviewImage(String srcFile, String destFile) {
         try {
             File fi = new File(srcFile); // src
@@ -185,10 +188,10 @@ public class MaintainController extends MultiActionController {
 
             int w = bis.getWidth();
             int h = bis.getHeight();
-            int nw = IMAGE_SIZE;
+            int nw = IMAGE_WIDTH;
             int nh = (nw * h) / w;
-            if (nh > IMAGE_SIZE) {
-                nh = IMAGE_SIZE;
+            if (nh > IMAGE_WIDTH) {
+                nh = IMAGE_WIDTH;
                 nw = (nh * w) / h;
             }
             double sx = (double) nw / w;

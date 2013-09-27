@@ -2,11 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 上传照片的dao -->
+
 <mapper namespace="nicky.dao.mapper.file.FileMapper">
-    <insert id = "saveFile" parameterType = "FileMeta">
+    <!-- save file -->
+    <insert id = "saveFile" parameterType = "FileMeta" useGeneratedKeys="true" keyProperty="fileId">
         <![CDATA[
         insert into picture(pic_name,pic_title,pic_size, pic_create_time, pic_update_time)
             values(#{fileName},#{fileTitle},#{fileSize},sysdate(),sysdate())
         ]]>
     </insert>
+    <!-- update file -->
+    <update id="updateFile" parameterType = "FileMeta">
+        <![CDATA[
+	        UPDATE PICTURE 
+	        SET PIC_DESCRIPTION = #{fileDescription},
+	        PIC_TITLE = #{fileTitle},
+	        PIC_UPDATE_TIME = sysdate()
+	        WHERE PIC_ID = #{fileId}
+        ]]>
+    </update>
+    <select id="findAllFiles" resultType = "FileMeta">
+        <![CDATA[
+	        SELECT PIC_TITLE AS FILETITLE,
+	           PIC_DESCRIPTION AS FILEDESCRIPTION,
+	           PIC_NAME AS FILENAME
+	        FROM PICTURE
+        ]]>
+    </select>
 </mapper>
