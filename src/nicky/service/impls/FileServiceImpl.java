@@ -23,7 +23,7 @@ public class FileServiceImpl implements IFileService {
         if(fileIds != null && fileIds.length != 0) {
             List<FileMeta> files = FileMeta.formFileList(fileIds, fileTitles, fileDescs);
             for (FileMeta file : files) {
-                fileMapper.updateFile(file);
+                    fileMapper.updateFile(file);
                 }
         }
     }

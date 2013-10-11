@@ -25,7 +25,7 @@ public class IndexController extends MultiActionController{
     }
     @RequestMapping(value = "/index")
     public ModelAndView indexView() {
-        ModelAndView mav = new ModelAndView("photo/photo_list");
+        ModelAndView mav = new ModelAndView("index/index");
 //        mav.addObject("name", "Nicky!  " +  testServiceImpl.find());
         mav.addObject("name", "Nicky!  " +  testServiceImpl.find());
         List<FileMeta> pictures = fileServiceImpl.findAllFiles();

@@ -2,15 +2,17 @@
 <#escape x as x?html>
 <@layout.page title="欢迎来到小屋" 
                 csses=['/photo/photo_list.css']
-                scripts=[]>
+                scripts=['js/index/index.js']>
 
       <!-- Jumbotron -->
       <div class="jumbotron">
-        <h1>Marry me!?</h1>
+        <h1>...</h1>
         <p class="lead">Every day is a happy day with U.</p>
         <a class="btn btn-large btn-success" href="#">Yes!</a>
       </div>
       <hr>
+
+  <#if (pictures?size > 0)> 
         <div id="myCarousel" class="carousel slide">
           <ol class="carousel-indicators">
             <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -19,7 +21,6 @@
           </ol>
           <!-- Carousel items -->
           <div class="carousel-inner">
-              <#if pictures??> 
                     
                         <#list pictures as pic>
                             <#if pic_index == 0>
@@ -41,18 +42,30 @@
                             </#if>
                         </#list>
                     
-              <#else>
-                    <div>暂时没有照片！~。~</div>
-              </#if>
           </div>
           <!-- Carousel nav -->
           <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
           <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
         </div>
+  <#else>
+        <div>暂时没有照片！~。~</div>
+  </#if>
       
       
       <div>Hello World! ${name!""}</div>
-
+      <div class="container-fluid" >
+          <div class="row-fluid" >
+            <div class="span6">
+              <div><h1>送祝福</h1></div>
+              <div>祝福语：<textarea rows="3"></textarea></div>
+              <div>祝福人：<input type="text" placeholder="别忘记署名哦"></div>
+            </div>
+            <div id = "blessingDiv" class="span6" >
+              zhufuzhufuzhufu~~~   --- qianlei<br>
+              sfsdfsdfsdfsdfsdfsd   --- QianLei
+            </div>
+          </div>
+      </div>
       <!-- Example row of columns -->
       <div class="row-fluid">
         <div class="span4">
